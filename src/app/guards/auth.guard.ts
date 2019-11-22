@@ -10,14 +10,14 @@ import { map, take, tap } from 'rxjs/operators';
 })
 export class AuthGuard implements CanActivate, CanLoad {
   constructor(
-    private authSerivice: AuthService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.authSerivice.afUser$.pipe(
+    return this.authService.afUser$.pipe(
       map(user => !!user),
       tap(isLoggedIn => {
         if (!isLoggedIn) {
@@ -30,7 +30,7 @@ export class AuthGuard implements CanActivate, CanLoad {
   canLoad(
     route: Route,
     segments: UrlSegment[]): Observable<boolean> | Promise<boolean> | boolean {
-    return this.authSerivice.afUser$.pipe(
+    return this.authService.afUser$.pipe(
       map(user => !!user),
       take(1)
     );
